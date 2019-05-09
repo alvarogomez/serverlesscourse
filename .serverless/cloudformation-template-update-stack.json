@@ -103,7 +103,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/gettogether/dev/1557409036708-2019-05-09T13:37:16.708Z/gettogether.zip"
+          "S3Key": "serverless/gettogether/dev/1557413719687-2019-05-09T14:55:19.687Z/gettogether.zip"
         },
         "FunctionName": "gettogether-dev-getGetTogethers",
         "Handler": "src/functions/getGetTogethers.handler",
@@ -115,21 +115,26 @@
           ]
         },
         "Runtime": "nodejs8.10",
-        "Timeout": 6
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "getTogethersTableName": "dev-gettogethers"
+          }
+        }
       },
       "DependsOn": [
         "GetGetTogethersIamRoleLambdaExecution",
         "GetGetTogethersLogGroup"
       ]
     },
-    "GetGetTogethersLambdaVersion01lMMijNJb3HNr47VYnlcNlMyNyEzcjK2oiHiA1K31g": {
+    "GetGetTogethersLambdaVersioncxmTSTXOQcOzlthhlYmvtl7PVZrXpyT7eJ12dIBm3w": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetGetTogethersLambdaFunction"
         },
-        "CodeSha256": "K4MpIEKzvD+KWSu+3AuDbFJzvl10Z6qNkOKWKiv+LwQ="
+        "CodeSha256": "kstpdbTHo5CnXybkmQOsUAY8yjQ9vs0lu5iIWTG4NrI="
       }
     },
     "ApiGatewayRestApi": {
@@ -213,7 +218,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1557409022085": {
+    "ApiGatewayDeployment1557413705198": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -322,7 +327,7 @@
                   "Effect": "Allow",
                   "Action": "dynamodb:scan",
                   "Resource": {
-                    "Fn::Sub": "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/gettogethers"
+                    "Fn::Sub": "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/dev-gettogethers"
                   }
                 }
               ]
@@ -348,7 +353,7 @@
     "GetTogethersTable": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
-        "TableName": "gettogethers",
+        "TableName": "dev-gettogethers",
         "AttributeDefinitions": [
           {
             "AttributeName": "id",
@@ -374,7 +379,7 @@
     "GetGetTogethersLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetGetTogethersLambdaVersion01lMMijNJb3HNr47VYnlcNlMyNyEzcjK2oiHiA1K31g"
+        "Ref": "GetGetTogethersLambdaVersioncxmTSTXOQcOzlthhlYmvtl7PVZrXpyT7eJ12dIBm3w"
       }
     },
     "ServiceEndpoint": {

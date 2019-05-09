@@ -4,8 +4,8 @@
   "description": "Meetup clone",
   "main": "index.js",
   "scripts": {
-    "test:integration": "jest ./tests/*",
-    "test:acceptance": "jest ./tests/*",
+    "test:integration": "set TEST_MODE=handler && jest ./tests/*",
+    "test:acceptance": "set TEST_MODE=http && jest ./tests/*",
     "deploy": "serverless deploy --aws-profile serverless-local --aws-s3-accelerate",
     "seed": "AWS_PROFILE=serverless-local node seedGetTogethers.js gettogethers"
   },

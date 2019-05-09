@@ -7,7 +7,6 @@ describe(`When we invoke the GET /gettogethers endpoint`, () => {
   });
 
   test(`Should return an array of 8 gettogethers`, async () => {
-    process.env.TEST_MODE = "http";
     const res = await when.we_invoke_get_gettogethers();
 
     expect(res.statusCode).toBe(200);
