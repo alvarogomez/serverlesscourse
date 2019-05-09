@@ -1,0 +1,33 @@
+{
+  "name": "gettogheters",
+  "version": "1.0.0",
+  "description": "Meetup clone",
+  "main": "index.js",
+  "scripts": {
+    "test:integration": "jest ./tests/*",
+    "test:acceptance": "jest ./tests/*",
+    "deploy": "serverless deploy --aws-profile serverless-local --aws-s3-accelerate",
+    "seed": "AWS_PROFILE=serverless-local node seedGetTogethers.js gettogethers"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vgaltes/TheServerlessCourseSourceCode.git"
+  },
+  "author": "Vicenc Garcia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vgaltes/TheServerlessCourseSourceCode/issues"
+  },
+  "homepage": "https://github.com/vgaltes/TheServerlessCourseSourceCode#readme",
+  "devDependencies": {
+    "jest": "^24.7.1",
+    "serverless": "^1.41.1",
+    "serverless-iam-roles-per-function": "^2.0.0",
+    "serverless-pseudo-parameters": "^2.4.0",
+    "superagent": "^5.0.3",
+    "superagent-promise": "^1.1.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.445.0"
+  }
+}
