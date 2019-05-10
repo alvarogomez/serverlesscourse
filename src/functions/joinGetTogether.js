@@ -1,15 +1,16 @@
-/* eslint-disable import/no-unresolved */
-const AWS = require("aws-sdk");
 const chance = require("chance").Chance();
-const sns = new AWS.SNS();
+const sns = require("../lib/snsClient");
+const log = require("../lib/log");
+const middy = require("middy");
+const captureCorrelationId = require("../middleware/captureCorrelationId");
 
-module.exports.handler = async (event, context) => {
+const handler = async (event, context) => {
   const body = JSON.parse(event.body);
   const getTogetherId = body.getTogetherId;
   const userEmail = body.getTogetherId;
 
   const orderId = chance.guid();
-  console.log(`user ${userEmail} joining gettogether ${getTogetherId}`);
+  log.info("user requesting to join gettogether", {userEmail, getTogetherId});
 
   const data = {
     orderId,
@@ -24,7 +25,7 @@ module.exports.handler = async (event, context) => {
 
   await sns.publish(params).promise();
 
-  console.log("published 'join_getTogether' event");
+  log.info("published 'join_getTogether' event", {orderId, getTogetherId, userEmail});
 
   const response = {
     statusCode: 200,
@@ -33,3 +34,5 @@ module.exports.handler = async (event, context) => {
 
   return response;
 };
+
+module.exports.handler = middy(handler).use(captureCorrelationId());

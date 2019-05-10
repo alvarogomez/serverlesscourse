@@ -36,6 +36,18 @@
               "LogGroupName": "/aws/lambda/gettogether-dev-getGetTogethers"
             }
           },
+          "NotifyOrganiserLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/gettogether-dev-notifyOrganiser"
+            }
+          },
+          "JoinGetTogetherLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/gettogether-dev-joinGetTogether"
+            }
+          },
           "IamRoleLambdaExecution": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -78,6 +90,12 @@
                         "Resource": [
                           {
                             "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/gettogether-dev-getGetTogethers:*"
+                          },
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/gettogether-dev-notifyOrganiser:*"
+                          },
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/gettogether-dev-joinGetTogether:*"
                           }
                         ]
                       },
@@ -89,6 +107,12 @@
                         "Resource": [
                           {
                             "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/gettogether-dev-getGetTogethers:*:*"
+                          },
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/gettogether-dev-notifyOrganiser:*:*"
+                          },
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/gettogether-dev-joinGetTogether:*:*"
                           }
                         ]
                       }
@@ -117,7 +141,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/gettogether/dev/1557413719687-2019-05-09T14:55:19.687Z/gettogether.zip"
+                "S3Key": "serverless/gettogether/dev/1557480897295-2019-05-10T09:34:57.295Z/gettogether.zip"
               },
               "FunctionName": "gettogether-dev-getGetTogethers",
               "Handler": "src/functions/getGetTogethers.handler",
@@ -132,7 +156,7 @@
               "Timeout": 6,
               "Environment": {
                 "Variables": {
-                  "getTogethersTableName": "dev-gettogethers"
+                  "getTogethersTableName": "/gettogethers/dev/secureTableName"
                 }
               }
             },
@@ -141,14 +165,93 @@
               "GetGetTogethersLogGroup"
             ]
           },
-          "GetGetTogethersLambdaVersioncxmTSTXOQcOzlthhlYmvtl7PVZrXpyT7eJ12dIBm3w": {
+          "GetGetTogethersLambdaVersionjJFL6g6QxsrNcIQgdLvDppyxao1Yeyqfo5YCKG8Lc": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetGetTogethersLambdaFunction"
               },
-              "CodeSha256": "kstpdbTHo5CnXybkmQOsUAY8yjQ9vs0lu5iIWTG4NrI="
+              "CodeSha256": "CL2ytY+E0/ndtqla3EtYqQ7waDDMJa4Xl+dn1XLIALk="
+            }
+          },
+          "NotifyOrganiserLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/gettogether/dev/1557480897295-2019-05-10T09:34:57.295Z/gettogether.zip"
+              },
+              "FunctionName": "gettogether-dev-notifyOrganiser",
+              "Handler": "src/functions/notifyOrganiser.handler",
+              "MemorySize": 1024,
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "Runtime": "nodejs8.10",
+              "Timeout": 6
+            },
+            "DependsOn": [
+              "NotifyOrganiserLogGroup",
+              "IamRoleLambdaExecution"
+            ]
+          },
+          "NotifyOrganiserLambdaVersionbzHIZqz3mOXURgxCiDjc5K7XSJlMiZLfVVM79A5YNVQ": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "NotifyOrganiserLambdaFunction"
+              },
+              "CodeSha256": "CL2ytY+E0/ndtqla3EtYqQ7waDDMJa4Xl+dn1XLIALk="
+            }
+          },
+          "JoinGetTogetherLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/gettogether/dev/1557480897295-2019-05-10T09:34:57.295Z/gettogether.zip"
+              },
+              "FunctionName": "gettogether-dev-joinGetTogether",
+              "Handler": "src/functions/joinGetTogether.handler",
+              "MemorySize": 1024,
+              "Role": {
+                "Fn::GetAtt": [
+                  "JoinGetTogetherIamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "Runtime": "nodejs8.10",
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "joinGetTogetherSnsTopic": {
+                    "Fn::Sub": "arn:aws:sns:${AWS::Region}:${AWS::AccountId}:dev-joingettogethers"
+                  }
+                }
+              }
+            },
+            "DependsOn": [
+              "JoinGetTogetherIamRoleLambdaExecution",
+              "JoinGetTogetherLogGroup"
+            ]
+          },
+          "JoinGetTogetherLambdaVersionm9ffpkVTtkaXOEkGsOijmoKPNBKumPC39UsqwAdfJ6k": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "JoinGetTogetherLambdaFunction"
+              },
+              "CodeSha256": "CL2ytY+E0/ndtqla3EtYqQ7waDDMJa4Xl+dn1XLIALk="
             }
           },
           "ApiGatewayRestApi": {
@@ -184,6 +287,18 @@
                 "Ref": "ApiGatewayResourceApi"
               },
               "PathPart": "getTogethers",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceApiGettogether": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceApi"
+              },
+              "PathPart": "getTogether",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
@@ -232,7 +347,50 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1557413705198": {
+          "ApiGatewayMethodApiGettogetherPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceApiGettogether"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "JoinGetTogetherLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayDeployment1557480879116": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -241,7 +399,8 @@
               "StageName": "dev"
             },
             "DependsOn": [
-              "ApiGatewayMethodApiGettogethersGet"
+              "ApiGatewayMethodApiGettogethersGet",
+              "ApiGatewayMethodApiGettogetherPost"
             ]
           },
           "GetGetTogethersLambdaPermissionApiGateway": {
@@ -291,6 +450,115 @@
               }
             }
           },
+          "JoinGetTogetherLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "JoinGetTogetherLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "apigateway.",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    }
+                  ]
+                ]
+              },
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "SNSTopicDevjoingettogethers": {
+            "Type": "AWS::SNS::Topic",
+            "Properties": {
+              "TopicName": "dev-joingettogethers",
+              "DisplayName": "",
+              "Subscription": [
+                {
+                  "Endpoint": {
+                    "Fn::GetAtt": [
+                      "NotifyOrganiserLambdaFunction",
+                      "Arn"
+                    ]
+                  },
+                  "Protocol": "lambda"
+                }
+              ]
+            }
+          },
+          "NotifyOrganiserLambdaPermissionDevjoingettogethersSNS": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "NotifyOrganiserLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "sns.",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    }
+                  ]
+                ]
+              },
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":sns:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    "dev-joingettogethers"
+                  ]
+                ]
+              }
+            }
+          },
           "GetGetTogethersIamRoleLambdaExecution": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -333,7 +601,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/gettogether-dev-getGetTogethers:*:*"
+                            "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/gettogether-dev-getGetTogethers:*:*"
                           }
                         ]
                       },
@@ -342,6 +610,13 @@
                         "Action": "dynamodb:scan",
                         "Resource": {
                           "Fn::Sub": "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/dev-gettogethers"
+                        }
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": "ssm:GetParameters*",
+                        "Resource": {
+                          "Fn::Sub": "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/gettogethers/dev/*"
                         }
                       }
                     ]
@@ -356,6 +631,79 @@
                     "gettogether",
                     "dev",
                     "getGetTogethers",
+                    "eu-west-1",
+                    "lambdaRole"
+                  ]
+                ]
+              },
+              "ManagedPolicyArns": []
+            }
+          },
+          "JoinGetTogetherIamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "dev",
+                        "gettogether",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/gettogether-dev-joinGetTogether:*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": "sns:Publish",
+                        "Resource": {
+                          "Fn::Sub": "arn:aws:sns:${AWS::Region}:${AWS::AccountId}:dev-joingettogethers"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "gettogether",
+                    "dev",
+                    "joinGetTogether",
                     "eu-west-1",
                     "lambdaRole"
                   ]
@@ -393,7 +741,19 @@
           "GetGetTogethersLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetGetTogethersLambdaVersioncxmTSTXOQcOzlthhlYmvtl7PVZrXpyT7eJ12dIBm3w"
+              "Ref": "GetGetTogethersLambdaVersionjJFL6g6QxsrNcIQgdLvDppyxao1Yeyqfo5YCKG8Lc"
+            }
+          },
+          "NotifyOrganiserLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "NotifyOrganiserLambdaVersionbzHIZqz3mOXURgxCiDjc5K7XSJlMiZLfVVM79A5YNVQ"
+            }
+          },
+          "JoinGetTogetherLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "JoinGetTogetherLambdaVersionm9ffpkVTtkaXOEkGsOijmoKPNBKumPC39UsqwAdfJ6k"
             }
           },
           "ServiceEndpoint": {
@@ -449,7 +809,9 @@
     "custom": {
       "defaultRegion": "eu-west-1",
       "defaultStage": "dev",
-      "getTogethersTableName": "dev-gettogethers"
+      "getTogethersTableName": "dev-gettogethers",
+      "joinGetTogetherSnsTopicName": "dev-joingettogethers",
+      "joinGetTogetherSnsTopic": "arn:aws:sns:#{AWS::Region}:#{AWS::AccountId}:dev-joingettogethers"
     },
     "plugins": [
       "serverless-pseudo-parameters",
@@ -471,12 +833,55 @@
         "iamRoleStatements": [
           {
             "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"GetGetTogethersIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
+          },
+          {
+            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"GetGetTogethersIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][2]"
           }
         ],
         "environment": {
-          "getTogethersTableName": "dev-gettogethers"
+          "getTogethersTableName": "/gettogethers/dev/secureTableName"
         },
         "name": "gettogether-dev-getGetTogethers",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs8.10",
+        "vpc": {}
+      },
+      "notifyOrganiser": {
+        "handler": "src/functions/notifyOrganiser.handler",
+        "events": [
+          {
+            "sns": "dev-joingettogethers"
+          }
+        ],
+        "name": "gettogether-dev-notifyOrganiser",
+        "package": {},
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs8.10",
+        "vpc": {}
+      },
+      "joinGetTogether": {
+        "handler": "src/functions/joinGetTogether.handler",
+        "events": [
+          {
+            "http": {
+              "path": "api/getTogether",
+              "method": "post",
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "environment": {
+          "joinGetTogetherSnsTopic": "arn:aws:sns:#{AWS::Region}:#{AWS::AccountId}:dev-joingettogethers"
+        },
+        "iamRoleStatements": [
+          {
+            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"JoinGetTogetherIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
+          }
+        ],
+        "name": "gettogether-dev-joinGetTogether",
         "package": {},
         "memory": 1024,
         "timeout": 6,
@@ -512,7 +917,7 @@
     "artifact": "C:\\workplace\\serverlesscourse\\.serverless\\gettogether.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/gettogether/dev/1557413719687-2019-05-09T14:55:19.687Z",
+    "artifactDirectoryName": "serverless/gettogether/dev/1557480897295-2019-05-10T09:34:57.295Z",
     "artifact": "gettogether.zip"
   }
 }
