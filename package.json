@@ -4,8 +4,8 @@
   "description": "Meetup clone",
   "main": "index.js",
   "scripts": {
-    "test:integration": "TEST_MODE=handler && jest ./tests/*",
-    "test:acceptance": "TEST_MODE=http && jest ./tests/*",
+    "test:integration": "TEST_MODE=handler jest ./tests/*",
+    "test:acceptance": "TEST_MODE=http jest ./tests/*",
     "deploy": "serverless deploy --aws-profile serverless-local --aws-s3-accelerate",
     "seed": "AWS_PROFILE=serverless-local node seedGetTogethers.js gettogethers",
     "deploy:sit": "serverless deploy --stage sit",
@@ -25,12 +25,13 @@
   "devDependencies": {
     "jest": "^24.7.1",
     "serverless": "^1.41.1",
-    "serverless-iam-roles-per-function": "^2.0.0",
+    "serverless-iam-roles-per-function": "^1.0.4",
     "serverless-pseudo-parameters": "^2.4.0",
     "superagent": "^5.0.3",
     "superagent-promise": "^1.1.0"
   },
   "dependencies": {
-    "aws-sdk": "^2.445.0"
+    "aws-sdk": "^2.445.0",
+    "chance": "^1.0.18"
   }
 }

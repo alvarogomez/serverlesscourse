@@ -8,7 +8,8 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 const getTogethers = [
   {
     id: 1,
-    name: "Programación funcional en la playa",
+    name:
+      "Programación funcional en la playa",
     description:
       "Nos vamos a la playa y hablamos de mónadas, functors y demás cosas raras."
   },
@@ -21,7 +22,8 @@ const getTogethers = [
   {
     id: 3,
     name: "Makers",
-    description: "Hacemos cosas, generalmente con algo de tecnología."
+    description:
+      "Hacemos cosas, generalmente con algo de tecnología."
   },
   {
     id: 4,
