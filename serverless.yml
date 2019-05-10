@@ -9,6 +9,14 @@ provider:
   runtime: nodejs8.10
   region: ${opt:region, self:custom.defaultRegion}
   stage: ${opt:stage, self:custom.defaultStage}
+  tracing:
+    lambda: true
+  iamRoleStatements:
+    - Effect: Allow
+      Action: 
+        - 'xray:PutTraceSegments'
+        - 'xray:PutTelemetryRecords'
+      Resource: '*'
 
 package:
   exclude: 
